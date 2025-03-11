@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://67cf212c823da0212a818bc4.mockapi.io/contacts/';
+const API_URL = 'https://connections-api.goit.global/contacts';
 
 const initialState = {
   items: [],
@@ -11,25 +11,46 @@ const initialState = {
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
-  async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
+  async (_, { getState, rejectWithValue }) => {
+    const token = getState().auth.token;
+    try {
+      const response = await axios.get(API_URL, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch contacts');
+    }
   }
 );
 
 export const addContact = createAsyncThunk(
   'contacts/addContact',
-  async (contact) => {
-    const response = await axios.post(API_URL, contact);
-    return response.data;
+  async (contact, { getState, rejectWithValue }) => {
+    const token = getState().auth.token;
+    try {
+      const response = await axios.post(API_URL, contact, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to add contact');
+    }
   }
 );
 
 export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
-  async (id) => {
-    await axios.delete(`${API_URL}/${id}`);
-    return id;
+  async (id, { getState, rejectWithValue }) => {
+    const token = getState().auth.token;
+    try {
+      await axios.delete(`${API_URL}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to delete contact');
+    }
   }
 );
 
@@ -49,7 +70,7 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchContacts.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(addContact.pending, (state) => {
         state.isLoading = true;
@@ -61,7 +82,7 @@ const contactsSlice = createSlice({
       })
       .addCase(addContact.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(deleteContact.pending, (state) => {
         state.isLoading = true;
@@ -69,13 +90,11 @@ const contactsSlice = createSlice({
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = state.items.filter(
-          (contact) => contact.id !== action.payload
-        );
+        state.items = state.items.filter((contact) => contact.id !== action.payload);
       })
       .addCase(deleteContact.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });
