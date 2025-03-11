@@ -1,0 +1,109 @@
+.app-container {
+  margin-top: 20px;
+  width: 420px;
+  height: 70vh;
+  max-width: 100%;
+  background-color: #ffffff;
+  border-radius: 40px;
+  position: relative;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.app-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.camera-hole {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  background-color: black;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.camera-hole:hover {
+  background-color: #333;
+}
+
+.screen {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(145deg, #f9f9f9, #ffffff);
+  border-radius: 40px;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  animation: pulseDark 1.5s infinite alternate;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+@keyframes pulseDark {
+  0% {
+    text-shadow: 2px 2px 8px rgba(106, 17, 203, 0.5);
+  }
+  100% {
+    text-shadow: 2px 2px 12px rgba(37, 117, 252, 0.8);
+  }
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  transform: translateX(-50%);
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(106, 17, 203, 0.8);
+  animation: underlineGlow 3.5s infinite alternate;
+}
+
+@keyframes underlineGlow {
+  0% {
+    width: 240px;
+    box-shadow: 0px 0px 10px rgba(106, 17, 203, 0.5);
+  }
+  100% {
+    width: 420px;
+    box-shadow: 0px 0px 20px rgba(37, 117, 252, 1);
+  }
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2C2C2C;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+}
